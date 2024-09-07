@@ -5,3 +5,4 @@ python generateRegKey.py pathToCurFiles
 - Or Edit the included reg file and replace `C:\TEMP\YaruWindows` with where you want to put the cursor files
 
 - Merge the reg file, you should be able to see the cursors under control panel now
+- Note this changes `CursorBaseSize` to `24` (`dword:00000018`) in hex) `[HKEY_CURRENT_USER\Control Panel\Cursors]`

@@ -1,4 +1,7 @@
 Windows Registry Editor Version 5.00
 
+[HKEY_CURRENT_USER\Control Panel\Cursors]
+"CursorBaseSize"=dword:00000020
+
 [HKEY_CURRENT_USER\Control Panel\Cursors\Schemes]
 "YaruWindows"="C:\\TEMP\\YaruWindows\\arrow.cur,C:\\TEMP\\YaruWindows\\whats_this.cur,C:\\TEMP\\YaruWindows\\half-busy.ani,C:\\TEMP\\YaruWindows\\wait.ani,C:\\TEMP\\YaruWindows\\cross.cur,C:\\TEMP\\YaruWindows\\text.cur,C:\\TEMP\\YaruWindows\\pencil.cur,C:\\TEMP\\YaruWindows\\not-allowed.cur,C:\\TEMP\\YaruWindows\\size_ver.cur,C:\\TEMP\\YaruWindows\\size_hor.cur,C:\\TEMP\\YaruWindows\\size-fdiag.cur,C:\\TEMP\\YaruWindows\\size-bdiag.cur,C:\\TEMP\\YaruWindows\\move.cur,C:\\TEMP\\YaruWindows\\sb_up_arrow.cur,C:\\TEMP\\YaruWindows\\hand.cur"
