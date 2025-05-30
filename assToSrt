@@ -1,0 +1,68 @@
+import argparse
+
+from datetime import datetime, timedelta
+
+def add_seconds(time_str, seconds_to_add):
+    # Parse the main time (excluding fractional part)
+    main_part, frac_part = time_str.split('.')
+    dt = datetime.strptime(main_part, "%H:%M:%S")
+    
+    # Add fractional seconds as microseconds
+    microseconds = int(float('0.' + frac_part) * 1_000_000)
+    
+    # Add timedelta
+    new_time = dt + timedelta(seconds=seconds_to_add, microseconds=microseconds)
+    
+    # Format result with centiseconds (2 digits of fractional seconds)
+    return new_time.strftime("%-H:%M:%S,") + f"{int(new_time.microsecond / 10_000):02d}"
+
+def split_into_n_parts(text, token, n):
+    parts = text.split(token)
+    if len(parts) < n:
+        raise ValueError(f"Cannot split into {n} parts, only found {len(parts)}")
+    elif len(parts) > n:
+        # Join the remaining parts into the last segment
+        parts = parts[:n-1] + [token.join(parts[n-1:])]
+    return parts
+
+
+if __name__ == '__main__':
+    argParse = argparse.ArgumentParser(prog="ASS to SRT converter")
+    
+    argParse.add_argument('-i', help="input files", required=True, nargs='+')
+    argParse.add_argument('-d', help="delay", default=0.0)
+    args = argParse.parse_args()
+    files = args.i
+    delay = float(args.d)
+    
+    for file in files:
+        with open(file, 'r') as lines:
+            newFileName = file.split('.ass')[0] + '.srt'
+            with open(newFileName, 'w') as newFile:
+                count = 1
+                attribs = None
+                for line in lines:
+                    if '[Events]' in line:
+                        nextLine = lines.readline()
+                        attribs = [s.strip() for s in nextLine.split("Format: ")[1].strip().split(',')]
+                        # print(attribs)
+                        # print(attribs.index("Start"))
+                        continue
+                        
+                    if attribs is not None and 'Dialogue' in line:
+                        data = split_into_n_parts(line,',',len(attribs))
+                        
+                        startTime = data[attribs.index("Start")]
+                        # print(add_seconds(startTime, delay))
+                        endTime = data[attribs.index("End")]
+                        text = data[attribs.index("Text")]
+                        fullText = f'{count}\n{add_seconds(startTime, delay)} --> {add_seconds(endTime, delay)}\n{text}\n'
+                        count += 1
+                        # print(fullText)
+                        newFile.write(fullText)
+                        # exit()
+                        
+                print("File written to", newFileName)
+                    
+                
+                
